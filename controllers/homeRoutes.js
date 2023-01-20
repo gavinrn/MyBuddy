@@ -41,7 +41,7 @@ router.get('/homePage/:id', async (req, res) => {
     const homePage = homePageData.get({ plain: true });
 
     res.render('homePage', {
-      ...homePage,
+      ...project,
       logged_in: req.session.logged_in
     });
   } catch (err) {
