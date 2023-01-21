@@ -40,8 +40,29 @@ router.delete("/:id", withAuth, async (req, res) => {
   }
 });
 
-// UPDATE ONE POST BY ID (this one we should do if we want this functionality)
-
+// UPDATE ONE POST BY ID
+router.put('/:id', withAuth, (req, res) => {
+  Post.update(
+    {
+      // Content of post can be changed by user
+      content: req.body.content,
+    },
+    {
+      // Gets a post based on the id and must belong to user requesting update
+      where: {
+        id: req.params.id,
+        user_id: req.session.user_id,
+      },
+    }
+  )
+    .then((updatedPost) => {
+      res.json(updatedPost);
+    })
+    .catch((err) => {
+      console.log(err);
+      res.json(err);
+    });
+});
 
 // GET ALL POSTS (this should be in homeroute?)
 // GET ALL POSTS FOR USER (this would be in user profile route?)
