@@ -13,56 +13,56 @@
   <title>My Budd-i</title>
 </head>
 
-<body>
+<body onmousemove="getCursorPosition(event)">
   <div class="wrapper">
     <main>
-      <section>
-        <div class="row">
-          <div id="col-1" class="col">
-            <div id="sign-up-form" class="form">
-              <h1>Sign Up</h1>
-              <form onsubmit="return false;">
-                <label for="email-1">
-                  <input id="email-1" name="email-1" type="email" placeholder="" autocomplete="off">
-                  <span id="span-email-1">Email</span>
-                </label>
-                <label for="password-1">
-                  <input id="password-1" name="password-1" type="password" placeholder="">
-                  <span id="span-password-1">Password</span>
-                </label>
-                <input type="submit" value="Sign-up">
-              </form>
+          </div>
+        </div>
+        <div class="login-container">
+          <div class="social-login">
+            <div class="logo">
+              <img src="/Assets/social media/icons8-robot-100.png" alt="" width="60" height="60" />
+           
             </div>
-            <div id="login-form" class="form display-none">
-              <h1>Login</h1>
-              <form onsubmit="return false;">
-                <label for="email-2">
-                  <input id="email-2" name="email-2" type="email" placeholder="" autocomplete="off">
-                  <span id="span-email-2">Email</span>
-                </label>
-                <label for="password-2">
-                  <input id="password-2" name="password-2" type="password" placeholder="">
-                  <span id="span-password-2">Password</span>
-                </label>
-                <a href="#">Forgot password?</a>
-                <input type="submit" value="Login">
-              </form>
+            <p>Login using social media to get quick access</p>
+            <div class="social-grp">
+              <div class="btn"><a href="#"><img src="/Assets/social media/icons8-twitter-50.png" alt="" width="32" height="32" /><span>Twitter</span></a></div>
+              <div class="btn"><a href="#"><img src="/Assets/social media/icons8-facebook-50.png" alt="" width="32" height="32" /><span>Facebook</span></a></div>
+              <div class="btn"><a href="#"><img src="/Assets/social media/icons8-gmail-logo-50.png" alt="" width="32" height="32" /><span>Google</span></a></div>
+              <div class="btn"><a href="#"><img src="/Assets/social media/icons8-instagram-50.png" alt="" width="32" height="32" /><span>Instagram</span></a></div>
             </div>
           </div>
-          <div id="col-2" class="col">
-            <div id="login" class="info">
-              <h2>Have an account?</h2>
-              <button onclick="formChange('login')">Login</button>
+          <div class="email-login">
+            <div class="login-h-container">
+              <h1>Login to your account</h1>
+              <p>Don’t have an account? <a href="#">Sign up Free!</a></p>
             </div>
-            <div id="sign-up" class="info display-none">
-              <h2>Don't have an account?</h2>
-              <a href="/Assets/create.html"></a><button onclick="formChange('signup')">Sign Up</button><a
-            </div>
+            <form>
+              <label for="email">
+                <input id="email" name="email" type="email" placeholder="" autocomplete="off">
+                <span id="span-email">Email</span>
+              </label>
+              <label for="password">
+                <input id="password" name="password" type="password" placeholder="">
+                <span id="span-password">Password</span>
+              </label>
+              <div class="recovery">
+                <div>
+                  <input type="checkbox" id="remember" name="remember">
+                  <label for="remember">Remember me</label>
+                </div>
+                <a href="">Forgot Password?</a>
+              </div>
+              <input type="submit" value="Login with Email">
+            </form>
           </div>
         </div>
       </section>
+      <div class="vector-1"></div>
+      <div class="vector-2"></div>
+      <div class="vector-3"></div>
     </main>
-  </div>
+</div>
 </body>
 <script href="/Assets/signup.js"></script>
 
