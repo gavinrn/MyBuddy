@@ -1,32 +1,60 @@
-const router = require('express').Router();
-const { homePage, User } = require('../models');
-const withAuth = require('../utils/auth');
+const router = require("express").Router();
+const { User, Post, Comment, Like } = require("../models");
+const withAuth = require("../utils/auth");
 
-router.get('/', async (req, res) => {
+// RENDER HOMEPAGE (withAuth to redirect to "/login")
+router.get("/", withAuth, async (req, res) => {
   try {
+    // Get post data and join user data
+    const postData = await Post.findAll({
+      include: [
+        {
+          model: User,
+          attributes: ["name"],
+        },
+      ],
+    });
+    // TO DO: Get post comment data and join user data
 
-    res.render('homepage');
+    // Serialize data so template can read it
+    const posts = postData.map((post) => post.get({ plain: true }));
+    console.log(posts);
+    // Pass serialized data and session flag into template and render Homepage
+    res.render("homepage", {
+      posts,
+    });
   } catch (err) {
     res.status(500).json(err);
   }
 });
 
-router.get('/homePage/:id', async (req, res) => {
+// LOGIN ROUTE (if user logged in, redirect to home "/")
+router.get("/login", (req, res) => {
+  if (req.session.logged_in) {
+    res.redirect("/");
+    return;
+  }
+  res.render("login");
+});
+
+// ---Boilerplate code under here---
+
+router.get("/homePage/:id", async (req, res) => {
   try {
     const projectData = await Project.findByPk(req.params.id, {
       include: [
         {
           model: User,
-          attributes: ['name'],
+          attributes: ["name"],
         },
       ],
     });
 
     const homePage = homePageData.get({ plain: true });
 
-    res.render('homePage', {
+    res.render("homePage", {
       ...project,
-      logged_in: req.session.logged_in
+      logged_in: req.session.logged_in,
     });
   } catch (err) {
     res.status(500).json(err);
@@ -34,33 +62,23 @@ router.get('/homePage/:id', async (req, res) => {
 });
 
 // Use withAuth middleware to prevent access to route
-router.get('/profile', withAuth, async (req, res) => {
+router.get("/profile", withAuth, async (req, res) => {
   try {
     // Find the logged in user based on the session ID
     const userData = await User.findByPk(req.session.user_id, {
-      attributes: { exclude: ['password'] },
+      attributes: { exclude: ["password"] },
       include: [{ model: Project }],
     });
 
     const user = userData.get({ plain: true });
 
-    res.render('profile', {
+    res.render("profile", {
       ...user,
-      logged_in: true
+      logged_in: true,
     });
   } catch (err) {
     res.status(500).json(err);
   }
-});
-
-router.get('/login', (req, res) => {
-  // If the user is already logged in, redirect the request to another route
-  if (req.session.logged_in) {
-    res.redirect('/profile');
-    return;
-  }
-
-  res.render('login');
 });
 
 module.exports = router;
