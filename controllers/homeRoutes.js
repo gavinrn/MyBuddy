@@ -1,66 +1,103 @@
-const router = require('express').Router();
-const { homePage, User } = require('../models');
-const withAuth = require('../utils/auth');
+const router = require("express").Router();
+const { User, Post, Comment, Like } = require("../models");
+const withAuth = require("../utils/auth");
 
-router.get('/', async (req, res) => {
+// RENDER HOMEPAGE (withAuth to redirect to "/login")
+router.get("/", withAuth, async (req, res) => {
   try {
-
-    res.render('homepage');
-  } catch (err) {
-    res.status(500).json(err);
-  }
-});
-
-router.get('/homePage/:id', async (req, res) => {
-  try {
-    const projectData = await Project.findByPk(req.params.id, {
+    // --- POST DATA ---
+    // Get post data and join user data
+    const postData = await Post.findAll({
       include: [
         {
           model: User,
-          attributes: ['name'],
+          attributes: ["name"],
         },
       ],
     });
 
-    const homePage = homePageData.get({ plain: true });
+    // Serialize post data so template can read it
+    const posts = postData.map((post) => post.get({ plain: true }));
+    console.log(posts);
 
-    res.render('homePage', {
-      ...project,
-      logged_in: req.session.logged_in
+    // -- COMMENT DATA --
+    // Get post comment data and join user data
+    const commentData = await Comment.findAll({
+      include: [
+        {
+          model: User,
+          attributes: ["name"],
+        },
+      ],
+    });
+    // Serialize comment data so template can read it
+    const comments = commentData.map((comment) => comment.get({ plain: true }));
+    console.log(comments);
+
+    // -- RENDER HOMEPAGE --
+    // Pass serialized data and session flag into template and render Homepage
+    res.render("homepage", {
+      posts,
+      comments,
     });
   } catch (err) {
     res.status(500).json(err);
   }
 });
 
-// Use withAuth middleware to prevent access to route
-router.get('/profile', withAuth, async (req, res) => {
+// LOGIN ROUTE (if user logged in, redirect to home "/")
+router.get("/login", (req, res) => {
+  if (req.session.logged_in) {
+    res.redirect("/");
+    return;
+  }
+  res.render("login");
+});
+
+// USER PROFILE ROUTE
+router.get("/profile", withAuth, async (req, res) => {
   try {
     // Find the logged in user based on the session ID
     const userData = await User.findByPk(req.session.user_id, {
-      attributes: { exclude: ['password'] },
-      include: [{ model: Project }],
+      attributes: { exclude: ["password"] },
+      // include Post data for that user
+      include: [{ model: Post }],
     });
 
     const user = userData.get({ plain: true });
-
-    res.render('profile', {
+    // Render profile page with user data
+    res.render("profile", {
       ...user,
-      logged_in: true
+      logged_in: true,
     });
   } catch (err) {
     res.status(500).json(err);
   }
 });
 
-router.get('/login', (req, res) => {
-  // If the user is already logged in, redirect the request to another route
-  if (req.session.logged_in) {
-    res.redirect('/profile');
-    return;
-  }
+// POST ROUTE for specific post id
 
-  res.render('login');
+router.get("/post/:id", async (req, res) => {
+  try {
+    const postData = await Post.findByPk(req.params.id, {
+      include: [
+        {
+          model: User,
+          attributes: ["name"],
+        },
+      ],
+    });
+     // Serialize post data so template can read it
+    const post = postData.get({ plain: true });
+
+    res.render("post", {
+      ...post,
+      logged_in: req.session.logged_in,
+    });
+  } catch (err) {
+    res.status(500).json(err);
+  }
 });
 
+// MODULE EXPORT
 module.exports = router;
