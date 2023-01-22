@@ -5,6 +5,7 @@ const withAuth = require("../utils/auth");
 // RENDER HOMEPAGE (withAuth to redirect to "/login")
 router.get("/", withAuth, async (req, res) => {
   try {
+    // --- POST DATA ---
     // Get post data and join user data
     const postData = await Post.findAll({
       include: [
@@ -14,14 +15,30 @@ router.get("/", withAuth, async (req, res) => {
         },
       ],
     });
-    // TO DO: Get post comment data and join user data
 
-    // Serialize data so template can read it
+    // Serialize post data so template can read it
     const posts = postData.map((post) => post.get({ plain: true }));
     console.log(posts);
+
+    // -- COMMENT DATA --
+    // Get post comment data and join user data
+    const commentData = await Comment.findAll({
+      include: [
+        {
+          model: User,
+          attributes: ["name"],
+        },
+      ],
+    });
+    // Serialize comment data so template can read it
+    const comments = commentData.map((comment) => comment.get({ plain: true }));
+    console.log(comments);
+
+    // -- RENDER HOMEPAGE --
     // Pass serialized data and session flag into template and render Homepage
     res.render("homepage", {
       posts,
+      comments,
     });
   } catch (err) {
     res.status(500).json(err);
@@ -37,41 +54,18 @@ router.get("/login", (req, res) => {
   res.render("login");
 });
 
-// ---Boilerplate code under here---
-
-router.get("/homePage/:id", async (req, res) => {
-  try {
-    const projectData = await Project.findByPk(req.params.id, {
-      include: [
-        {
-          model: User,
-          attributes: ["name"],
-        },
-      ],
-    });
-
-    const homePage = homePageData.get({ plain: true });
-
-    res.render("homePage", {
-      ...project,
-      logged_in: req.session.logged_in,
-    });
-  } catch (err) {
-    res.status(500).json(err);
-  }
-});
-
-// Use withAuth middleware to prevent access to route
+// USER PROFILE ROUTE
 router.get("/profile", withAuth, async (req, res) => {
   try {
     // Find the logged in user based on the session ID
     const userData = await User.findByPk(req.session.user_id, {
       attributes: { exclude: ["password"] },
-      include: [{ model: Project }],
+      // include Post data for that user
+      include: [{ model: Post }],
     });
 
     const user = userData.get({ plain: true });
-
+    // Render profile page with user data
     res.render("profile", {
       ...user,
       logged_in: true,
@@ -81,4 +75,29 @@ router.get("/profile", withAuth, async (req, res) => {
   }
 });
 
+// POST ROUTE for specific post id
+
+router.get("/post/:id", async (req, res) => {
+  try {
+    const postData = await Post.findByPk(req.params.id, {
+      include: [
+        {
+          model: User,
+          attributes: ["name"],
+        },
+      ],
+    });
+     // Serialize post data so template can read it
+    const post = postData.get({ plain: true });
+
+    res.render("post", {
+      ...post,
+      logged_in: req.session.logged_in,
+    });
+  } catch (err) {
+    res.status(500).json(err);
+  }
+});
+
+// MODULE EXPORT
 module.exports = router;
