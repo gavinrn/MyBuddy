@@ -2,43 +2,48 @@ const router = require("express").Router();
 const { User, Post, Comment, Like } = require("../models");
 const withAuth = require("../utils/auth");
 
-// RENDER HOMEPAGE (withAuth to redirect to "/login")
+// RENDER HOMEPAGE with Post and Comment data (withAuth to redirect to "/login")
 router.get("/", withAuth, async (req, res) => {
   try {
     // --- POST DATA ---
-    // Get post data and join user data
+    // Get posts and comments with user data
     const postData = await Post.findAll({
       include: [
         {
           model: User,
           attributes: ["name"],
         },
+        {
+          model: Comment,
+          include: { User },
+        },
       ],
     });
 
     // Serialize post data so template can read it
     const posts = postData.map((post) => post.get({ plain: true }));
-    console.log(posts);
 
     // -- COMMENT DATA --
     // Get post comment data and join user data
-    const commentData = await Comment.findAll({
-      include: [
-        {
-          model: User,
-          attributes: ["name"],
-        },
-      ],
-    });
-    // Serialize comment data so template can read it
-    const comments = commentData.map((comment) => comment.get({ plain: true }));
-    console.log(comments);
+    // const commentData = await Comment.findAll({
+    //   include: [
+    //     {
+    //       model: User,
+    //       attributes: ["name"],
+    //     },
+    //   ],
+    // });
+    // // Serialize comment data so template can read it
+    // const comments = commentData.map((comment) => comment.get({ plain: true }));
+    // console.log(comments);
 
+
+    console.log(posts);
+    
     // -- RENDER HOMEPAGE --
     // Pass serialized data and session flag into template and render Homepage
     res.render("homepage", {
       posts,
-      comments,
     });
   } catch (err) {
     res.status(500).json(err);
@@ -87,7 +92,7 @@ router.get("/post/:id", async (req, res) => {
         },
       ],
     });
-     // Serialize post data so template can read it
+    // Serialize post data so template can read it
     const post = postData.get({ plain: true });
 
     res.render("post", {
