@@ -7,21 +7,21 @@ router.get("/", withAuth, async (req, res) => {
   try {
     // --- POST DATA ---
     // Get posts and comments with user data
-    const postData = await Post.findAll({
-      include: [
-        {
-          model: User,
-          attributes: ["name"],
-        },
-        {
-          model: Comment,
-          include: { User },
-        },
-      ],
-    });
+    // const postData = await Post.findAll({
+    //   include: [
+    //     {
+    //       model: User,
+    //       attributes: ["name"],
+    //     },
+    //     {
+    //       model: Comment,
+    //       include: { User },
+    //     },
+    //   ],
+    // });
 
     // Serialize post data so template can read it
-    const posts = postData.map((post) => post.get({ plain: true }));
+    // const posts = postData.map((post) => post.get({ plain: true }));
 
     // -- COMMENT DATA --
     // Get post comment data and join user data
@@ -38,13 +38,11 @@ router.get("/", withAuth, async (req, res) => {
     // console.log(comments);
 
 
-    console.log(posts);
+    // console.log(posts);
     
     // -- RENDER HOMEPAGE --
     // Pass serialized data and session flag into template and render Homepage
-    res.render("homepage", {
-      posts,
-    });
+    res.render("homepage");
   } catch (err) {
     res.status(500).json(err);
   }

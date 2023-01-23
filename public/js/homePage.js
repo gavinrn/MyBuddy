@@ -2,14 +2,15 @@ const homePageHandler = async (event) => {
     event.preventDefault();
   
     // Handle logout & posts
-    const logout = document.querySelector('#logout').value.trim();
-    const posts = document.querySelector('#posts').value.trim();
-  
-    if (posts) {
+    // const logout = document.querySelector('#logout').value.trim();
+    const content = document.querySelector('#userPost').value.trim();
+  console.log("hi")
+    if (content) {
       // Send a POST request to the API endpoint
+      console.log(content)
       const response = await fetch('/api/post', {
         method: 'POST',
-        body: JSON.stringify({ posts }),
+        body: JSON.stringify({ content }),
         headers: { 'Content-Type': 'application/json' },
       });
   
@@ -23,5 +24,5 @@ const homePageHandler = async (event) => {
   };
 
   document
-    .querySelector('.posting-form')
-    .addEventListener('submit', loginFormHandler);
+    .querySelector('.user-form')
+    .addEventListener('submit', homePageHandler);
