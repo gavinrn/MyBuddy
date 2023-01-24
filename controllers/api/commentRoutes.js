@@ -7,7 +7,7 @@ const withAuth = require("../../utils/auth");
 router.post("/", withAuth, async (req, res) => {
   try {
     const newComment = await Comment.create({
-        // req.body should have "content" and "post_id"
+      // req.body should have "content" and "post_id"
       ...req.body,
       user_id: req.session.user_id,
     });
@@ -22,6 +22,7 @@ router.post("/", withAuth, async (req, res) => {
 
 router.delete("/:id", withAuth, async (req, res) => {
   try {
+    console.log(req);
     const commentData = await Comment.destroy({
       where: {
         id: req.params.id,
@@ -36,33 +37,34 @@ router.delete("/:id", withAuth, async (req, res) => {
 
     res.status(200).json(commentData);
   } catch (err) {
+    console.log(err);
     res.status(500).json(err);
   }
 });
 
 // UPDATE ONE COMMENT BY ID
-router.put('/:id', withAuth, (req, res) => {
-    Comment.update(
-      {
-        // Content of Comment can be changed by user
-        content: req.body.content,
+router.put("/:id", withAuth, (req, res) => {
+  Comment.update(
+    {
+      // Content of Comment can be changed by user
+      content: req.body.content,
+    },
+    {
+      // Gets a Comment based on the id and must belong to user requesting update
+      where: {
+        id: req.params.id,
+        user_id: req.session.user_id,
       },
-      {
-        // Gets a Comment based on the id and must belong to user requesting update
-        where: {
-          id: req.params.id,
-          user_id: req.session.user_id,
-        },
-      }
-    )
-      .then((updatedComment) => {
-        res.json(updatedComment);
-      })
-      .catch((err) => {
-        console.log(err);
-        res.json(err);
-      });
-  });
+    }
+  )
+    .then((updatedComment) => {
+      res.json(updatedComment);
+    })
+    .catch((err) => {
+      console.log(err);
+      res.json(err);
+    });
+});
 
 // GET ALL COMMENTS (this should be in homeroute?)
 // GET ALL COMMENTS FOR USER (this would be in user profile route?)
