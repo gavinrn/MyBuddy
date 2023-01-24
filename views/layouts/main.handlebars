@@ -11,17 +11,18 @@
   <div class="flex-column justify-space-around">
     <header class="display-flex justify-space-between align-center p-2">
       <h1>
-        <span role="img" aria-label="money">:money_with_wings:</span>
+        <span role="img" aria-label="money"></span>
         <a href="/"></a>
       </h1>
       <nav>
-        <!-- Conditionally render login or logout links -->
-        {{#if logged_in}}
-        <a href="/profile">profile</a> |
         <button class="no-button" id="logout">logout</button>
+
+        <!-- Conditionally render login or logout links -->
+        {{!-- {{#if logged_in}}
+        <a href="/profile">profile</a> |
         {{else}}
         <a href="/login">login</a>
-        {{/if}}
+        {{/if}} --}}
       </nav>
     </header>
     <main class="container container-fluid mt-5">
@@ -32,8 +33,9 @@
     </footer>
   </div>
   <!-- Render script for logged in users only -->
+    <script src="./js/logout.js"></script>
   {{#if logged_in}}
-  <script src="/js/logout.js"></script>
+
   {{/if}}
 </body>
 </html>

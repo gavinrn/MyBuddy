@@ -49,7 +49,11 @@ const commentHandler = async (event) => {
     }
   }
 };
+
+
 // EVENT LISTENERS
+
+
 // Posts Event Listener
 document.querySelector(".post-form").addEventListener("submit", postHandler);
 
