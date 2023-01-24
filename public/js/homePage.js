@@ -32,12 +32,12 @@ const commentHandler = async (event) => {
   // Comment Model is expecting "content" "post_id"
   const content = document.querySelector("#comment-post").value.trim();
   // I think a query selector to find the "data-postid" data attribute in the post div would be possible
-  const post_id = document.querySelector("");
+  const post_id = document.querySelector(".post").post_id;
 
   if (content) {
     // Send a POST request to the API endpoint
     console.log(content);
-    const response = await fetch("/api/post", {
+    const response = await fetch("/api/", {
       method: "POST",
       body: JSON.stringify({ content }),
       headers: { "Content-Type": "application/json" },
