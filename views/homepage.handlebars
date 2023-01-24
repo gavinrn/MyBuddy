@@ -2,17 +2,17 @@
 
 <button class="“btn" btn-primary” id="“logout”" type="“submit”">signup</button>
 
-<form class="form user-form">
+<form class="form post-form">
   <div class="form-group">
     <label for="userPost">User post:</label>
     <input class="form-input" type="text" id="userPost" />
   </div>
-
   <div class="form-group">
     <button class="btn btn-primary" type="submit">Post</button>
   </div>
 </form>
 {{#each posts as |post|}}
+{{!-- Post Container --}}
   <div class="post" data-postid={{post.id}}>
     <div class="post-content">
       <p>
@@ -20,6 +20,18 @@
         {{post.content}}
       </p>
     </div>
+    {{!-- Comment Form --}}
+    <form class="form comment-form">
+  <div class="form-group">
+    <label for="comment-post">User Comment:</label>
+    {{!-- Is it a problem that we'll have multiple inputs with the same id "comment-post"? --}}
+    <input class="form-input" type="text" id="comment-post" />
+  </div>
+  <div class="form-group">
+    <button class="btn btn-primary" type="submit">New Comment</button>
+  </div>
+</form>
+{{!-- TO DO: CREATE COMMENT RENDERING FUNCTIONALITY HERE--}}
   </div>
 {{/each}}
 
