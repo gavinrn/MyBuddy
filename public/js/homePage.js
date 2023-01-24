@@ -1,15 +1,12 @@
 // FORM HANDLERS
-// Posts
+// Posts Form Handler
 const postHandler = async (event) => {
   event.preventDefault();
 
   // Handle logout & posts
-  // const logout = document.querySelector('#logout').value.trim();
   const content = document.querySelector("#userPost").value.trim();
-  console.log("hi");
   if (content) {
     // Send a POST request to the API endpoint
-    console.log(content);
     const response = await fetch("/api/post", {
       method: "POST",
       body: JSON.stringify({ content }),
@@ -25,37 +22,40 @@ const postHandler = async (event) => {
   }
 };
 
-// Comments
+// Comments Form Handler
 const commentHandler = async (event) => {
   event.preventDefault();
+  console.log(event);
+  // Get user text and "data-postid" from closest parent div (post div)
+  const content = event.target[0].value;
+  const post_id = event.target.closest(".post").dataset.postid;
+  console.log(post_id, content);
 
-  // Comment Model is expecting "content" "post_id"
-  const content = document.querySelector("#comment-post").value.trim();
-  // I think a query selector to find the "data-postid" data attribute in the post div would be possible
-  const post_id = document.querySelector("");
-
-  if (content) {
+  if (content && post_id) {
     // Send a POST request to the API endpoint
-    console.log(content);
-    const response = await fetch("/api/post", {
+    console.log(`content: ${content}`);
+    const response = await fetch("/api/comment", {
       method: "POST",
-      body: JSON.stringify({ content }),
+      body: JSON.stringify({ content, post_id }),
       headers: { "Content-Type": "application/json" },
     });
 
     if (response.ok) {
       // If successful, redirect the browser to the profile page
-      document.location.replace("/");
+      // document.location.replace("/");
+      console.log(`response: ${response}`);
     } else {
       alert(response.statusText);
     }
   }
 };
 // EVENT LISTENERS
-// Posts
+// Posts Event Listener
 document.querySelector(".post-form").addEventListener("submit", postHandler);
 
-// Comments
-document
-  .querySelector(".comment-form")
-  .addEventListener("submit", commentHandler);
+// Comments Event Listener for all instances of comment-form
+let commentSubmit = document.querySelectorAll(".comment-form");
+
+commentSubmit.forEach((btn) => {
+  btn.addEventListener("submit", commentHandler);
+});
