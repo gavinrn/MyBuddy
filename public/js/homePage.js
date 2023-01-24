@@ -49,6 +49,32 @@ const commentHandler = async (event) => {
     }
   }
 };
+
+
+// Post Delete Form Handler
+const postDeleteHandler = async (event) => {
+  event.preventDefault();
+  console.log(event);
+  // "data-postid" from closest parent div (post div)
+  const post_id = event.target.closest(".post").dataset.postid;
+  console.log(post_id);
+
+  if (post_id) {
+    // Send a POST request to the API endpoint
+    const response = await fetch(`/api/post/${post_id}`, {
+      method: "DELETE",
+      body: JSON.stringify({ post_id }),
+      headers: { "Content-Type": "application/json" },
+    });
+
+    if (response.ok) {
+      // If successful, redirect the browser to the profile page
+      document.location.replace("/");
+    } else {
+      alert(response.statusText);
+    }
+  }
+};
 // EVENT LISTENERS
 // Posts Event Listener
 document.querySelector(".post-form").addEventListener("submit", postHandler);
@@ -58,4 +84,11 @@ let commentSubmit = document.querySelectorAll(".comment-form");
 
 commentSubmit.forEach((btn) => {
   btn.addEventListener("submit", commentHandler);
+});
+
+// Delete Posts Event Listener for all instances of comment-form
+let postDeleteSubmit = document.querySelectorAll(".post-delete-form");
+
+postDeleteSubmit.forEach((btn) => {
+  btn.addEventListener("submit", postDeleteHandler);
 });

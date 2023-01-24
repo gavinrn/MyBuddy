@@ -20,6 +20,11 @@
         {{post.content}}
       </p>
     </div>
+    <form class="form post-delete-form">
+     <div class="form-group">
+        <button class="btn btn-primary" type="submit">Delete Post</button>
+    </div>
+    </form>
     {{! Comment Form }}
     <form class="form comment-form">
       <div class="form-group">
@@ -39,6 +44,7 @@
         {{comment.user.name}}:
         {{comment.content}}
       </p>
+    </div>
     </div>
   </div>
   {{/each}}
