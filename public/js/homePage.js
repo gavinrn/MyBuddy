@@ -93,6 +93,7 @@ const commentDeleteHandler = async (event) => {
 };
 
 // EVENT LISTENERS
+
 // Create Post Event Listener
 document.querySelector(".post-form").addEventListener("submit", postHandler);
 
