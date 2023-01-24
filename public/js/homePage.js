@@ -42,7 +42,7 @@ const commentHandler = async (event) => {
 
     if (response.ok) {
       // If successful, redirect the browser to the profile page
-      // document.location.replace("/");
+      document.location.replace("/");
       console.log(`response: ${response}`);
     } else {
       alert(response.statusText);

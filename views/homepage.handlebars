@@ -31,8 +31,17 @@
         <button class="btn btn-primary" type="submit">New Comment</button>
       </div>
     </form>
-    {{! TO DO: CREATE COMMENT RENDERING FUNCTIONALITY HERE}}
+    {{! Render Comments}}
+    {{#each comments as |comment|}}
+    <div class="comment" data-commentid={{comment.id}}>
+    <div class="comment-content">
+      <p>
+        {{comment.user.name}}:
+        {{comment.content}}
+      </p>
+    </div>
   </div>
+  {{/each}}
 {{/each}}
 
 <script src="./js/homePage.js"></script>
