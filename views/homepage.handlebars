@@ -20,11 +20,15 @@
         {{post.content}}
       </p>
     </div>
+    <form class="form post-delete-form">
+      <div class="form-group">
+        <button class="btn btn-primary" type="submit">Delete Post</button>
+      </div>
+    </form>
     {{! Comment Form }}
     <form class="form comment-form">
       <div class="form-group">
         <label for="comment-post">User Comment:</label>
-        {{! Is it a problem that we'll have multiple inputs with the same id "comment-post"? }}
         <input class="form-input" type="text" id="comment-post" />
       </div>
       <div class="form-group">
@@ -33,15 +37,21 @@
     </form>
     {{! Render Comments}}
     {{#each comments as |comment|}}
-    <div class="comment" data-commentid={{comment.id}}>
-    <div class="comment-content">
-      <p>
-        {{comment.user.name}}:
-        {{comment.content}}
-      </p>
-    </div>
+      <div class="comment" data-commentid={{comment.id}}>
+        <div class="comment-content">
+          <p>
+            {{comment.user.name}}:
+            {{comment.content}}
+          </p>
+        </div>
+        <form class="form comment-delete-form">
+          <div class="form-group">
+            <button class="btn btn-primary" type="submit">Delete Comment</button>
+          </div>
+        </form>
+      </div>
+    {{/each}}
   </div>
-  {{/each}}
 {{/each}}
 
 <script src="./js/homePage.js"></script>

@@ -21,6 +21,7 @@ router.post("/", withAuth, async (req, res) => {
 // DELETE POST
 
 router.delete("/:id", withAuth, async (req, res) => {
+  console.log(req);
   try {
     const postData = await Post.destroy({
       where: {
@@ -30,18 +31,20 @@ router.delete("/:id", withAuth, async (req, res) => {
     });
 
     if (!postData) {
+      console.log("404 from BE");
       res.status(404).json({ message: "No post found with this id!" });
       return;
     }
 
     res.status(200).json(postData);
   } catch (err) {
+    console.log(err);
     res.status(500).json(err);
   }
 });
 
 // UPDATE ONE POST BY ID
-router.put('/:id', withAuth, (req, res) => {
+router.put("/:id", withAuth, (req, res) => {
   Post.update(
     {
       // Content of post can be changed by user
