@@ -1,11 +1,11 @@
-<p>Home page</p>
+{{!-- <p>Home page</p> --}}
 
 {{!-- <button class="logoutBtn" btn-primary” id="“logout”" type="“submit”">logout</button> --}}
 
 <form class="form post-form">
   <div class="form-group">
     <label for="userPost">User post:</label>
-    <input class="form-input" type="text" id="userPost" />
+    <input class="post-form-input" type="text" id="userPost" />
   </div>
   <div class="form-group">
     <button class="btn btn-primary" type="submit">Post</button>
@@ -16,7 +16,7 @@
   {{! Post Container }}
   <div class="col-12">
   <div class="post" data-postid={{post.id}}>
-    <div class="post-content">
+    <div class="post-content" style="font-style">
       <p>
         {{post.user.name}}:
         {{post.content}}
@@ -30,11 +30,11 @@
     {{! Comment Form }}
     <form class="form comment-form">
       <div class="form-group">
-        <label for="comment-post">User Comment:</label>
+        <label for="comment-post">Comment:</label>
         <input class="form-input" type="text" id="comment-post" />
       </div>
       <div class="form-group">
-        <button class="btn btn-primary" type="submit">New Comment</button>
+        <button class="btn btn-primary" style="background-color:rgb(116, 255, 146)"type="submit">New Comment</button>
       </div>
     </form>
     {{! Render Comments}}
@@ -48,7 +48,7 @@
         </div>
         <form class="form comment-delete-form">
           <div class="form-group">
-            <button class="btn btn-primary" type="submit">Delete Comment</button>
+            <button class="btn btn-primary" style="background-color:rgb(255, 116, 116)", "margin-left: 150%" type="submit">Delete Comment</button>
           </div>
         </form>
       </div>
