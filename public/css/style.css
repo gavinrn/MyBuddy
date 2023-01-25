@@ -2,7 +2,7 @@
   --color-2: #72f347; /* Social login area background color */
   --color-3: #f7fef5; /* Social login buttons */
   --color-4: #151515; /* Login with email button */
-  background-color: #f2f2f2;
+  background-color: #dcf0f1;
 }
 body {
   font-family: Montserrat, sans-serif;
@@ -203,14 +203,32 @@ label:focus-within span,
   width:50px;
   margin-right: 150px;
 }
-.form-post-form{
-  font-size: 24px;
+
+.post {
+  padding:10px;
+  margin-bottom: 6px;
+  width:150%;
+  background-color:aliceblue;
+    border-color: aliceblue;
+    box-shadow: 0 36px 72px 0 rgba(0,0,0,0.24),0 17px 50px 0 rgba(0,0,0,0.19);
+    opacity: .99;
+    border-radius: 9px;
+}
+.post-form-input{
+  font-size: 21px;
   border: 1px solid rgb(255, 254, 254);
   border-radius: 25px;
+  margin-right: 25px;
+  margin-top: 25px;
+  height: 33px;
 }
 
 .form-comment-form {
   margin-left: 150%;
+}
+
+.comment{
+  border-top: 1px solid rgb(183, 217, 247);
 }
 
 .comment-content {
